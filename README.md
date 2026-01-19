@@ -89,7 +89,6 @@ Everything in Brewfile.dev plus:
 - **Build tools**: cmake, boost, llvm
 - **Apps**: tmux, neofetch, imagemagick
 - **Casks**: orbstack, fonts
-- **VS Code extensions**: Python, Jupyter, Docker, themes
 
 ### Updating Brewfiles
 

@@ -11,6 +11,7 @@
 export CONFIG_DIR="${HOME}/.config"  # Config files
 export INSTALLS_DIR="${HOME}/.installs"  # Install scripts
 export LOCAL_COMPS_DIR="${HOME}/.zfunc"  # Manual made completions
+export ZSH_COMPDUMP="${HOME}/.zcompdump"  # Fixed location for completion cache
 
 ## END OF GENERAL EXPORTS
 
@@ -29,9 +30,9 @@ fi
 #
 # Source and load Zinit
 source "${ZINIT_HOME}/zinit.zsh"
-#
-# Autoload ZSH modules and initialize completions
-autoload -Uz compinit && compinit
+
+# Ensure $ZPFX/bin is in PATH (zinit's binary install location)
+[[ ":$PATH:" != *":$ZPFX/bin:"* ]] && export PATH="$ZPFX/bin:$PATH"
 
 # INSTALL CORE ZINIT ANNEXES
 
@@ -87,7 +88,9 @@ zinit wait'1' lucid light-mode for \
     
 
 # LOAD COMPLETIONS
-# Load local completions
+# Load local completions as Zinit snippets
+# Note: This only registers snippets. To sync changes from $LOCAL_COMPS_DIR,
+# run update_zsh_completions which calls zinit update --snippets
 _zinit_load_local_completions () {
     if [[ -d "$LOCAL_COMPS_DIR" ]] && [[ -n "$(ls -A $LOCAL_COMPS_DIR 2>/dev/null)" ]]; then
         for file in $LOCAL_COMPS_DIR/*(.); do
@@ -97,14 +100,6 @@ _zinit_load_local_completions () {
     fi
 }
 _zinit_load_local_completions
-
-# IMPORTANT NOTE: This is a patch to fix the following error:
-# Zinit does not append the bin dir ($ZPFX) to PATH upon installation (i.e., 1st run);
-# it does work on the second run and onwards, though.
-source "${ZINIT_HOME}/zinit.zsh"
-
-# Run Zinit compdef replay quietly
-zinit cdreplay -q
 
 ## END OF ZINIT
 
@@ -323,8 +318,8 @@ update_zsh_completions () {
     fi
 
     if (( $+commands[orbctl] )); then
-        orbctl completion zsh > ${LOCAL_COMPS_DIR}/_orbctl &&
-        compdef _orbctl orb orbctl &&
+        # Generate completion and prepend #compdef directive for both orb and orbctl
+        { echo '#compdef orb orbctl'; orbctl completion zsh | tail -n +2; } > ${LOCAL_COMPS_DIR}/_orbctl &&
         SUCCESSES+='orb/orbctl' ||
         FAILS+='orb/orbctl'
     else
@@ -332,8 +327,8 @@ update_zsh_completions () {
     fi
     # Add more fns here...
 
-    # Load manual completions with Zinit
-    _zinit_load_local_completions && zinit cdreplay -q
+    # Sync updated completions to Zinit's snippet cache
+    zinit update --snippets --quiet
     
     # Count and report
     if (( ${#SUCCESSES} > 0 )); then
@@ -348,6 +343,10 @@ update_zsh_completions () {
     printf '%s\n' "";
 }
 #
+# Auto-generate completions on first run if directory is empty
+if [[ -z "$(ls -A $LOCAL_COMPS_DIR 2>/dev/null)" ]]; then
+    update_zsh_completions
+fi
 ## END OF ADDITIONAL COMPLETIONS
 
 
