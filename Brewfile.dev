@@ -1,0 +1,41 @@
+# =============================================================================
+# Brewfile.dev - Core CLI tools for development environments
+# =============================================================================
+# Used by: ./install.sh --dev
+# Works on: macOS and Linux (via Linuxbrew)
+#
+# These are essential terminal tools needed for a productive dev environment
+# in devcontainers, cloud VMs, or local development.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Core utilities
+# -----------------------------------------------------------------------------
+brew "git"                  # Version control
+brew "stow"                 # Dotfiles symlink manager
+brew "make"                 # Build automation
+
+# -----------------------------------------------------------------------------
+# Modern CLI replacements
+# -----------------------------------------------------------------------------
+brew "eza"                  # Modern ls replacement
+brew "bat"                  # Modern cat replacement (used by fzf previews)
+brew "tree"                 # Directory tree visualization
+
+# -----------------------------------------------------------------------------
+# Shell & prompt
+# -----------------------------------------------------------------------------
+brew "zsh-completions"      # Additional ZSH completions
+# Note: starship is installed via zinit in .zshrc
+
+# -----------------------------------------------------------------------------
+# Development tools
+# -----------------------------------------------------------------------------
+brew "gh"                   # GitHub CLI
+brew "just"                 # Command runner (modern make alternative)
+brew "tldr"                 # Simplified man pages
+
+# -----------------------------------------------------------------------------
+# Container tools
+# -----------------------------------------------------------------------------
+brew "jesseduffield/lazydocker/lazydocker"  # Docker TUI

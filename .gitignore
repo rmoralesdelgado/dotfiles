@@ -1,0 +1,14 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Local overrides (not tracked)
+# These are sourced if they exist but not committed
+zsh/.config/local.zsh

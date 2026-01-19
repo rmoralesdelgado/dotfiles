@@ -1,0 +1,15 @@
+[general]
+import = ["./dracula.toml"]
+
+[font]
+normal = { family = "RobotoMono Nerd Font", style = "Regular" }
+bold = { family = "RobotoMono Nerd Font", style = "Bold" }
+italic = { family = "RobotoMono Nerd Font", style = "Italic" }
+
+[keyboard]
+bindings = [
+  { key = "Right", mods = "Alt", chars = "\u001BF" },     # Option + Right: Move forward one word
+  { key = "Left", mods = "Alt", chars = "\u001BB" },      # Option + Left: Move backward one word
+  { key = "Right", mods = "Command", chars = "\u0005" },  # Cmd + Right: End of line (Ctrl+E)
+  { key = "Left", mods = "Command", chars = "\u0001" },   # Cmd + Left: Beginning of line (Ctrl+A)
+]

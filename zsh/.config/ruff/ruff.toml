@@ -1,0 +1,74 @@
+# DEFAULT RUFF CONFIGURATION
+
+# Exclude common directories
+exclude = [
+    ".git",
+    ".github",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "build",
+    "dist",
+    "venv",
+    "*.egg-info",
+]
+
+# Line length and indentation (matching Black's configuration)
+line-length = 96
+indent-width = 4
+
+# Target Python version
+target-version = "py311"
+
+[lint]
+# Enable all rules by default
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "A",
+    "D",
+    "D401", # Augment the convention by requiring an imperative mood for all docstrings
+    "C4",
+    "T10",
+    "Q",
+    "S",
+    "TCH",
+    "ARG",
+    "PTH",
+    "PGH",
+    "PL",
+    "TRY",
+    "NPY",
+    "RUF",
+]
+
+# Ignore specific rules
+ignore = [
+    "E501", # Line too long - Handled by formatter
+    "E203", # Whitespace before ':' - Incompatible with Black
+    "D417", # Relax the convention by _not_ requiring documentation for every function parameter
+]
+
+# Allow autofix for all rules
+fixable = ["ALL"]
+unfixable = []
+
+# Specific rule configurations
+[lint.flake8-quotes]
+docstring-quotes = "double"
+
+# Import sorting configuration
+[lint.isort]
+known-first-party = [] # Update this to your package name if different
+
+[lint.pydocstyle]
+convention = "numpy" # For numpy-style docstrings
+
+# Formatting configuration (Black-compatible)
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

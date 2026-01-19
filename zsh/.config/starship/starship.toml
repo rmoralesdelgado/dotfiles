@@ -1,0 +1,314 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](color_bg0)\
+$os\
+$username\
+[](bg:color_bg1 fg:color_bg0)\
+$directory\
+[](fg:color_bg1 bg:color_bg2)\
+$git_branch\
+$git_status\
+[](fg:color_bg2 bg:color_bg3)\
+$c\
+$rust\
+$golang\
+$nodejs\
+$php\
+$java\
+$kotlin\
+$haskell\
+$python\
+[](fg:color_bg3 bg:color_bg4)\
+$docker_context\
+$conda\
+[](fg:color_bg4 bg:color_bg5)\
+$time\
+[ ](fg:color_bg5)\
+$line_break$character"""
+
+# NOTES ON COLOR PALETTES AND PROMPT FORMAT
+# - Most palettes have 5 colors. The sixth color is an "exit" one (e.g., darker shade of color_bg5)
+# - The naming of colors in bg (0-6) or fg (0-1) help understand the prompt sequence
+# - It also allows to add more palettes without modifying specific color name variables
+
+
+palette = 'dracula'  
+
+[palettes.dracula]
+# Color schema from https://github.com/dracula/starship/blob/master/starship.toml
+color_bg0 = '#8be9fd'
+color_bg1 = '#50fa7b'
+color_bg2 = '#ffb86c'
+color_bg3 = '#ff79c6'
+color_bg4 = '#bd93f9'
+color_bg5 = '#f1fa8c'
+color_fg0 = '#282a36'
+color_fg1 = '#44475a'
+color_prompt_success = '#50fa7b'
+color_prompt_error = '#ff5555'
+color_purple = '#b16286'
+
+[palettes.gruvbox_dark]
+color_bg0 = '#d65d0e'
+color_bg1 = '#d79921'
+color_bg2 = '#689d6a'
+color_bg3 = '#458588'
+color_bg4 = '#665c54'
+color_bg5 = '#3c3836'
+color_fg0 = '#fbf1c7'
+color_fg1 = '#fbf1c7'
+color_prompt_success = '#98971a'
+color_prompt_error = '#cc241d'
+color_purple = '#b16286'
+
+[palettes.cyberpunk_sunset]
+color_bg0 = '#ff124f'
+color_bg1 = '#fc23cd'
+color_bg2 = '#fe75fe'
+color_bg3 = '#7a04eb'
+color_bg4 = '#310de0'
+color_bg5 = '#120458'
+color_fg0 = '#fbf1c7'
+color_fg1 = '#fbf1c7'
+color_prompt_success = '#73fffe'
+color_prompt_error = '#cc241d'
+color_purple = '#b16286'
+
+[palettes.cyberpunk_main]
+color_bg0 = '#ff124f'
+color_bg1 = '#d1f7ff'
+color_bg2 = '#05d9e8'
+color_bg3 = '#005678'
+color_bg4 = '#120458'
+color_bg5 = '#01012b'
+color_fg0 = '#f5f0e1'
+color_fg1 = '#fbf1c7'
+color_prompt_success = '#73fffe'
+color_prompt_error = '#cc241d'
+color_purple = '#b16286'
+
+[os]
+disabled = false
+style = "bg:color_bg0 fg:color_fg0"
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+Alpaquita = " "
+AlmaLinux = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Mabox = " "
+Mariner = " "
+MidnightBSD = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+Unknown = " "
+Void = " "
+
+[username]
+show_always = true
+style_user = "bg:color_bg0 fg:color_fg0"
+style_root = "bg:color_bg0 fg:color_fg0"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:color_fg0 bg:color_bg1"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = ""
+style = "bg:color_bg2"
+format = '[[ $symbol $branch ](fg:color_fg0 bg:color_bg2)]($style)'
+
+[git_status]
+style = "bg:color_bg2"
+format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_bg2)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[c]
+symbol = " "
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[php]
+symbol = ""
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[java]
+symbol = " "
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[kotlin]
+symbol = ""
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[haskell]
+symbol = ""
+style = "bg:color_bg3"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg3)]($style)'
+
+[python]
+symbol = ""
+style = "bg:color_bg3"
+version_format = "${raw}"
+format = '[[ ${symbol} (${version} )(\(via $virtualenv\) )](fg:color_fg0 bg:color_bg3)]($style)'
+pyenv_version_name = false
+
+[docker_context]
+symbol = ""
+style = "bg:color_bg4"
+format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg4)]($style)'
+
+[conda]
+style = "bg:color_bg4"
+format = '[[ $symbol( $environment) ](fg:#83a598 bg:color_bg4)]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:color_bg5"
+format = '[[  $time ](fg:color_fg0 bg:color_bg5)]($style)'
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[](bold fg:color_prompt_success)'
+error_symbol = '[](bold fg:color_prompt_error)'
+vimcmd_symbol = '[](bold fg:color_prompt_success)'
+vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
+vimcmd_replace_symbol = '[](bold fg:color_purple)'
+vimcmd_visual_symbol = '[](bold fg:color_bg1)'
+
+[aws]
+symbol = "  "
+
+[buf]
+symbol = " "
+
+[crystal]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[fennel]
+symbol = " "
+
+[fossil_branch]
+symbol = " "
+
+[guix_shell]
+symbol = " "
+
+[haxe]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[hostname]
+ssh_symbol = " "
+
+[julia]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[meson]
+symbol = "󰔷 "
+
+[nim]
+symbol = "󰆥 "
+
+[nix_shell]
+symbol = " "
+
+[ocaml]
+symbol = " "
+
+[package]
+symbol = "󰏗 "
+
+[perl]
+symbol = " "
+
+[pijul_channel]
+symbol = " "
+
+[rlang]
+symbol = "󰟔 "
+
+[ruby]
+symbol = " "
+
+[scala]
+symbol = " "
+
+[swift]
+symbol = " "
+
+[zig]
+symbol = " "
