@@ -1,0 +1,25 @@
+[user]
+	name = Raul Morales Delgado
+	email = rmoralesdelgado@gmail.com
+
+[core]
+	excludesfile = ~/.gitignore_global
+	pager = cat
+
+[init]
+	defaultBranch = main
+
+[log]
+	decorate = true
+	abbrevcommit = true
+
+[pager]
+	log = false
+
+[alias]
+	nicelog = log --oneline --graph --all --decorate
+
+# Local overrides (editor, difftool, credentials, etc.)
+# Create ~/.config/git/local.config for machine-specific settings
+[include]
+	path = ~/.config/git/local.config
