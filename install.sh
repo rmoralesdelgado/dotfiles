@@ -255,6 +255,7 @@ stow_packages() {
     
     # Stow each package directory
     stow_package "zsh"
+    stow_package "git"
     
     # Add more packages here as needed
     # stow_package "nvim"
@@ -388,9 +389,6 @@ show_list() {
         echo ""
         echo "  Casks (GUI apps):"
         grep -E '^cask "' "$BREWFILE_FULL" | sed 's/cask "\([^"]*\)".*/    - \1/'
-        echo ""
-        echo "  VS Code extensions:"
-        grep -E '^vscode "' "$BREWFILE_FULL" | sed 's/vscode "\([^"]*\)".*/    - \1/'
     else
         echo "    (Brewfile not found)"
     fi

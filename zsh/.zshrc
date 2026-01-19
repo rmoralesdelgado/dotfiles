@@ -355,6 +355,29 @@ fi
 if [[ -f "${CONFIG_DIR}/local.zsh" ]]; then
     source "${CONFIG_DIR}/local.zsh"
 fi
+
+# Auto-create git local config in containers (uses editor shim to open in host editor)
+if [[ -n "$REMOTE_CONTAINERS" || -n "$CODESPACES" || -f "/.dockerenv" ]]; then
+    if [[ ! -f "${CONFIG_DIR}/git/local.config" ]]; then
+        mkdir -p "${CONFIG_DIR}/git"
+        # Prefer windsurf, fall back to code (VS Code)
+        if (( $+commands[windsurf] )); then
+            _editor="windsurf"
+        else
+            _editor="code"
+        fi
+        cat > "${CONFIG_DIR}/git/local.config" << EOF
+# Container git config - uses ${_editor} shim to open in host editor
+[core]
+    editor = ${_editor} --wait
+[diff]
+    tool = ${_editor}
+[difftool "${_editor}"]
+    cmd = ${_editor} --wait --diff \$LOCAL \$REMOTE
+EOF
+        unset _editor
+    fi
+fi
 ## END OF LOCAL OVERRIDES
 
 

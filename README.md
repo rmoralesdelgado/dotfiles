@@ -2,38 +2,16 @@
 
 Personal development environment managed with [GNU Stow](https://www.gnu.org/software/stow/) and [Homebrew](https://brew.sh/).
 
-## Features
+## Quick Start
 
-- **Zinit** — Fast ZSH plugin manager with lazy loading
-- **Starship** — Cross-shell prompt with Dracula theme
-- **fzf** — Fuzzy finder with custom keybindings
-- **eza** — Modern `ls` replacement
-- **Platform-aware** — Conditional configs for macOS/Linux/containers
-- **Tiered installation** — Minimal, dev, or full Mac restoration
-
-## Structure
-
-```text
-dotfiles/
-├── zsh/                        # ZSH stow package
-│   ├── .zprofile               # Login shell config (ssh-agent, brew)
-│   ├── .zshrc                  # Interactive shell config (zinit, plugins)
-│   └── .config/
-│       ├── aliases.zsh         # Shell aliases
-│       ├── alacritty/          # Terminal emulator config
-│       ├── bat/                # Cat replacement config
-│       ├── eza/                # Ls replacement theme
-│       ├── fzf/                # Fuzzy finder config
-│       ├── neofetch/           # System info display
-│       ├── ruff/               # Python linter config
-│       └── starship/           # Prompt config
-├── Brewfile.dev                # Core CLI tools for dev environments
-├── Brewfile                    # Full Mac restoration (imports Brewfile.dev)
-├── install.sh                  # Bootstrap script
-└── README.md
+```bash
+git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./install.sh          # Minimal: stow only
+./install.sh --dev    # Devcontainer/VM: core CLI tools
+./install.sh --full   # New Mac: full restoration
+./install.sh --list   # Show what each mode installs
 ```
-
-## Installation
 
 ### Installation Modes
 
@@ -43,148 +21,85 @@ dotfiles/
 | Dev     | `./install.sh --dev` | Devcontainer/VM: core CLI tools              |
 | Full    | `./install.sh --full`| New Mac: all tools, apps, fonts, extensions  |
 
-### Quick Install
-
-```bash
-git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-./install.sh          # Minimal
-./install.sh --dev    # Dev environment
-./install.sh --full   # Full Mac setup
-```
-
-### List Available Packages
-
-```bash
-./install.sh --list
-```
-
-### Devcontainer / Cloud VM
-
-Add to your devcontainer.json:
+**Devcontainer:** Add to `devcontainer.json`:
 
 ```json
-{
-  "postCreateCommand": "git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles && ~/dotfiles/install.sh --dev"
-}
+{ "postCreateCommand": "git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles && ~/dotfiles/install.sh --dev" }
 ```
 
-## Brewfiles
+## Structure
 
-### Brewfile.dev (Dev Environment)
+Dotfiles are organized into **stow packages** — directories that mirror `$HOME`. Running `stow <package>` symlinks the contents to your home directory.
 
-Core CLI tools that work on macOS and Linux:
+| Package | Contents                                                                                      |
+|---------|-----------------------------------------------------------------------------------------------|
+| `zsh/`  | `.zprofile`, `.zshrc`, `.config/` (aliases, alacritty, bat, eza, fzf, neofetch, ruff, starship) |
+| `git/`  | `.gitconfig`, `.gitignore_global`                                                             |
 
-- git, stow, make
-- eza, bat, tree
-- gh, just, tldr
-- lazydocker
-- zsh-completions
+**Brewfiles** define installable packages: `Brewfile.dev` contains core CLI tools for any environment, while `Brewfile` imports it and adds macOS-specific items (pyenv, casks, etc.).
 
-### Brewfile (Full Mac)
+## Shell Environment
 
-Everything in Brewfile.dev plus:
+The ZSH configuration provides a fully customized shell experience:
 
-- **Languages**: pyenv, node, rust, python versions
-- **Build tools**: cmake, boost, llvm
-- **Apps**: tmux, neofetch, imagemagick
-- **Casks**: orbstack, fonts
-
-### Updating Brewfiles
-
-```bash
-# Regenerate from current system
-brew bundle dump --file=~/dotfiles/Brewfile --force
-
-# Install from Brewfile
-brew bundle install --file=~/dotfiles/Brewfile
-```
-
-## Usage
-
-### Stow Commands
-
-```bash
-# Apply symlinks
-cd ~/dotfiles && stow zsh
-
-# Remove symlinks
-cd ~/dotfiles && stow -D zsh
-
-# Re-stow (remove then apply)
-cd ~/dotfiles && stow -R zsh
-
-# Preview changes (dry run)
-cd ~/dotfiles && stow -n -v zsh
-
-# Unstow all packages
-./install.sh --unstow
-```
-
-### Local Overrides
-
-For machine-specific configuration not tracked in git:
-
-```bash
-~/.config/local.zsh
-```
-
-This file is sourced at the end of `.zshrc` if it exists.
-
-Example uses:
-
-- Machine-specific PATH additions (e.g., IDE paths)
-- Work-specific aliases
-- Local environment variables
+- **Zinit** — Plugin manager with lazy loading for fast startup
+- **Starship** — Minimal, fast prompt with Dracula theme
+- **fzf** — Fuzzy finder with custom keybindings (Ctrl+R for history, Ctrl+T for files)
+- **fzf-tab** — Tab completion powered by fzf
+- **eza** — Modern `ls` with icons and colors
+- **bat** — Syntax-highlighted `cat`
+- **Auto-completions** — Generated for ruff, poetry, snow, orbctl
 
 ## Platform Support
 
-| Feature          | macOS | Linux | Container      |
-|------------------|-------|-------|----------------|
-| Homebrew init    | ✅    | ✅    | ✅             |
-| pyenv            | ✅    | ❌    | ❌             |
-| SSH agent init   | ✅    | ✅    | ❌ (forwarded) |
-| Zinit plugins    | ✅    | ✅    | ✅             |
-| Starship         | ✅    | ✅    | ✅             |
-| Casks (GUI apps) | ✅    | ❌    | ❌             |
+The configuration is platform-aware with conditional logic for different environments:
 
-Container detection skips pyenv and SSH agent initialization when running in devcontainers, Codespaces, or Docker.
+| Feature        | macOS | Linux | Container      |
+|----------------|-------|-------|----------------|
+| Homebrew       | ✅    | ✅    | ✅             |
+| pyenv          | ✅    | ❌    | ❌             |
+| SSH agent init | ✅    | ✅    | ❌ (forwarded) |
+| Casks          | ✅    | ❌    | ❌             |
 
-## Adding New Stow Packages
+In containers (devcontainers, Codespaces, Docker), pyenv and SSH agent initialization are skipped — pyenv isn't needed, and SSH is forwarded from the host.
 
-1. Create a new directory: `mkdir -p ~/dotfiles/nvim/.config/nvim`
-2. Add config files mirroring home structure
-3. Stow: `cd ~/dotfiles && stow nvim`
-4. Add to `stow_packages()` in install.sh
+## Local Overrides
 
-## Troubleshooting
+Machine-specific config not tracked in git:
 
-### Conflicts during stow
+- `~/.config/local.zsh` — sourced at end of `.zshrc` (e.g., IDE paths, work aliases)
+- `~/.config/git/local.config` — included by `.gitconfig` (e.g., editor, signing keys)
 
-If stow reports conflicts, existing files need to be moved:
+## Common Commands
+
+### Stow
 
 ```bash
-# Backup and retry
-mv ~/.zshrc ~/.zshrc.bak
-cd ~/dotfiles && stow zsh
+stow zsh                    # Symlink a package to $HOME
+stow -D zsh                 # Remove symlinks for a package
+stow -R zsh                 # Re-stow (remove + apply)
+./install.sh --unstow       # Unstow all packages
 ```
 
-The install script automatically backs up conflicting files.
-
-### Zinit not loading
-
-Ensure git is installed and `~/.local/share/zinit` is writable.
-
-### Missing completions
-
-Run `update_zsh_completions` after installing new CLI tools.
-
-### Brewfile out of sync
+### Completions
 
 ```bash
-# See what's missing
-brew bundle check --file=~/dotfiles/Brewfile
-
-# Install missing packages
-brew bundle install --file=~/dotfiles/Brewfile
+update_zsh_completions      # Regenerate completions for ruff, poetry, snow, orbctl
 ```
+
+Run this after updating tools that provide shell completions.
+
+### Brewfile
+
+```bash
+brew bundle dump --file=~/dotfiles/Brewfile --force   # Export current packages
+brew bundle install --file=~/dotfiles/Brewfile        # Install from Brewfile
+brew bundle check --file=~/dotfiles/Brewfile          # Check what's missing
+```
+
+## Adding Packages
+
+1. `mkdir -p ~/dotfiles/nvim/.config/nvim`
+2. Add config files mirroring `$HOME` structure
+3. Add to `stow_packages()` in `install.sh`
+4. `stow nvim`
