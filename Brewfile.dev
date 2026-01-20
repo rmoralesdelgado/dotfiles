@@ -38,4 +38,5 @@ brew "tldr"                 # Simplified man pages
 # -----------------------------------------------------------------------------
 # Container tools
 # -----------------------------------------------------------------------------
-brew "jesseduffield/lazydocker/lazydocker"  # Docker TUI
+tap "jesseduffield/lazydocker"
+brew "lazydocker"  # Docker TUI
