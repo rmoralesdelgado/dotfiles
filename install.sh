@@ -131,7 +131,7 @@ install_from_brewfile() {
     fi
 
     info "Installing packages from $name..."
-    brew bundle install --file="$brewfile" --no-lock
+    brew bundle install --file="$brewfile"
     info "Packages from $name installed successfully"
 }
 
