@@ -77,33 +77,37 @@ fi
 ## END OF SSH AGENT
 
 
-## HOMEBREW (macOS only)
+## HOMEBREW
 
-if [[ "$DOTFILES_PLATFORM" == "macos" ]]; then
-    # Load Homebrew's env vars and binaries to PATH and Zsh completions to FPATH
-    # Docs: https://docs.brew.sh/Homebrew-on-MacOS
-    brew_init () {
-        printf '%s' "[.zprofile][brew] "
-        # Detect Homebrew path (Apple Silicon vs Intel)
-        local brew_path=""
+brew_init () {
+    printf '%s' "[.zprofile][brew] "
+    # Detect Homebrew path based on platform
+    local brew_path=""
+    if [[ "$DOTFILES_PLATFORM" == "macos" ]]; then
+        # macOS: Apple Silicon vs Intel
         if [[ -x "/opt/homebrew/bin/brew" ]]; then
-            brew_path="/opt/homebrew/bin/brew"  # Apple Silicon
+            brew_path="/opt/homebrew/bin/brew"
         elif [[ -x "/usr/local/bin/brew" ]]; then
-            brew_path="/usr/local/bin/brew"     # Intel
+            brew_path="/usr/local/bin/brew"
         fi
-
-        if [[ -n "$brew_path" ]]; then
-            eval "$($brew_path shellenv)" &&
-            printf '%s\n' "Successfully initialized." ||
-            printf '%s\n' "${RED}Failed to initialize.${NORMAL}"
-        else
-            printf '%s\n' "${RED}Homebrew not found.${NORMAL}"
+    elif [[ "$DOTFILES_PLATFORM" == "linux" ]]; then
+        # Linux: Linuxbrew
+        if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+            brew_path="/home/linuxbrew/.linuxbrew/bin/brew"
         fi
-    }
+    fi
 
-    brew_init
-    unset -f brew_init
-fi
+    if [[ -n "$brew_path" ]]; then
+        eval "$($brew_path shellenv)" &&
+        printf '%s\n' "Successfully initialized." ||
+        printf '%s\n' "${RED}Failed to initialize.${NORMAL}"
+    else
+        printf '%s\n' "Not installed, skipping."
+    fi
+}
+
+brew_init
+unset -f brew_init
 
 ## END OF HOMEBREW
 
