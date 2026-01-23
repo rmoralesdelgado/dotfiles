@@ -12,4 +12,5 @@ bindings = [
   { key = "Left", mods = "Alt", chars = "\u001BB" },      # Option + Left: Move backward one word
   { key = "Right", mods = "Command", chars = "\u0005" },  # Cmd + Right: End of line (Ctrl+E)
   { key = "Left", mods = "Command", chars = "\u0001" },   # Cmd + Left: Beginning of line (Ctrl+A)
+  { key = "Return", mods = "Shift", chars = "\u001b[13;2u" }  # Shift + Enter: CSI u format
 ]
