@@ -97,6 +97,20 @@ brew bundle install --file=~/dotfiles/Brewfile        # Install from Brewfile
 brew bundle check --file=~/dotfiles/Brewfile          # Check what's missing
 ```
 
+### Git Submodules
+
+```bash
+# Update all submodules to their latest versions
+git submodule update --remote
+git add .
+git commit -m "Update all submodules to latest versions"
+
+# Update only a specific submodule (e.g., tpm)
+git submodule update --remote tmux/.tmux/plugins/tpm
+git add .gitmodules tmux/.tmux/plugins/tpm
+git commit -m "Update tpm to latest version"
+```
+
 ## Adding Packages
 
 1. `mkdir -p ~/dotfiles/nvim/.config/nvim`

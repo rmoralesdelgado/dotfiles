@@ -184,6 +184,18 @@ create_directories() {
     mkdir -p "$HOME/.config"
 }
 
+# Initialize git submodules (e.g., tpm for tmux)
+init_git_submodules() {
+    if ! command -v git &>/dev/null; then
+        warn "git not found - skipping submodule initialization"
+        return 0
+    fi
+
+    info "Initializing git submodules..."
+    git submodule update --init --recursive
+    info "Git submodules initialized"
+}
+
 # Backup existing files that would conflict with stow
 # Takes package name as argument (e.g., "zsh")
 backup_existing() {
@@ -277,6 +289,7 @@ main_minimal() {
 
     install_minimal_dependencies
     create_directories
+    init_git_submodules
     stow_packages
 
     echo ""
@@ -298,6 +311,7 @@ main_dev() {
 
     install_dev_dependencies
     create_directories
+    init_git_submodules
     stow_packages
 
     echo ""
@@ -318,6 +332,7 @@ main_full() {
 
     install_full_dependencies
     create_directories
+    init_git_submodules
     stow_packages
 
     echo ""
