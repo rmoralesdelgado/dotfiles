@@ -77,7 +77,7 @@ zinit light starship/starship
 # Light-load zsh plugins
 # Based on https://zdharma-continuum.github.io/zinit/wiki/Example-Minimal-Setup/
 zinit wait'1' lucid light-mode for \
-    atinit"zicompinit; zicdreplay" \
+    atinit"ZINIT_COMPINIT_OPTS='-d ${ZSH_COMPDUMP}'; zicompinit; zicdreplay" \
         zdharma-continuum/fast-syntax-highlighting \
     atload"_zsh_autosuggest_start" \
         zsh-users/zsh-autosuggestions \
@@ -142,6 +142,31 @@ setopt hist_save_no_dups  # Don't save duplicate commands
 setopt hist_ignore_dups  # Ignore duplicate entries
 setopt hist_find_no_dups  # Ignore duplicate entries
 setopt hist_reduce_blanks  # Remove superfluous blanks
+
+# ZSH hook to prevent non-existent commands from being saved to history
+# This prevents typos like "gti" from cluttering your history
+zshaddhistory() {
+    local cmd="${1%%$'\n'}"  # Remove trailing newline
+    local first_word="${${(z)cmd}[1]}"  # Extract first word
+
+    # Skip history check for certain patterns
+    case "$first_word" in
+        # Allow built-ins, assignments, and special commands
+        *=*|builtin|command|noglob|nocorrect|-*)
+            return 0
+            ;;
+    esac
+
+    # Check if the command exists (as command, alias, function, or builtin)
+    if ! (( $+commands[$first_word] || $+aliases[$first_word] ||
+            $+functions[$first_word] || $+builtins[$first_word] )); then
+        # Command doesn't exist, don't save to history
+        return 1
+    fi
+
+    # Save to history
+    return 0
+}
 
 ## END OF HISTORY
 
