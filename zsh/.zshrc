@@ -350,6 +350,22 @@ update_zsh_completions () {
     else
         NOT_FOUNDS+='orb/orbctl'
     fi
+
+    if (( $+commands[uv] )); then
+        uv generate-shell-completion zsh > ${LOCAL_COMPS_DIR}/_uv &&
+        SUCCESSES+='uv' ||
+        FAILS+='uv'
+    else
+        NOT_FOUNDS+='uv'
+    fi
+
+    if (( $+commands[uvx] )); then
+        uvx --generate-shell-completion zsh > ${LOCAL_COMPS_DIR}/_uvx &&
+        SUCCESSES+='uvx' ||
+        FAILS+='uvx'
+    else
+        NOT_FOUNDS+='uvx'
+    fi
     # Add more fns here...
 
     # Sync updated completions to Zinit's snippet cache
