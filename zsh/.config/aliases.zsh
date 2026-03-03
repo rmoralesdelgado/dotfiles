@@ -52,3 +52,11 @@ if (( $+commands[eza] )); then
   alias lt='eza --tree --level=4 --color=always --group-directories-first --icons'
   alias tree='eza --tree --level=4 --color=always --group-directories-first --icons'
 fi
+
+
+# Claude Code
+if (( $+commands[claude] )); then
+    # Claude Code multi-account
+    alias claude-personal='CLAUDE_CONFIG_DIR=$HOME/.claude-personal command claude'
+    alias claude-work='CLAUDE_CONFIG_DIR=$HOME/.claude-work command claude'
+fi
