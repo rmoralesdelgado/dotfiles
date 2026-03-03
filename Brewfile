@@ -62,6 +62,7 @@ brew "zlib"
 # -----------------------------------------------------------------------------
 brew "duck"                 # Cyberduck CLI
 brew "imagemagick"          # Image manipulation
+brew "llmfit"               # Find right-sized LLMs that fit this machine
 brew "lolcat"               # Rainbow text
 brew "neofetch"             # System info display
 brew "pillow"               # Python imaging
