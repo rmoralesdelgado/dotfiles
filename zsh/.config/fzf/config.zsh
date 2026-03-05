@@ -11,7 +11,7 @@ bindkey "ç" fzf-cd-widget
 # Set defaults
 # Dracula theme for FZF from https://draculatheme.com/fzf
 export FZF_DEFAULT_OPTS="\
-    --layout=reverse --border=rounded --preview-window=border-rounded \
+    --layout=reverse --border=rounded --preview-window=border-rounded --height=~8 \
     --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 \
     --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 \
     --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 \
