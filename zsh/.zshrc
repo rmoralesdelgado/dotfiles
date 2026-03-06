@@ -422,4 +422,14 @@ fi
 ## END OF LOCAL OVERRIDES
 
 
+## KEY BINDINGS
+# Bind Alt+Left/Right to navigate words
+bindkey '\e[1;3D' backward-word
+bindkey '\e[1;3C' forward-word
+
+# Bind Alt+Backspace to delete word
+bindkey '\e^?' backward-kill-word
+## END OF KEY BINDINGS
+
+
 #### END OF ZSHRC
