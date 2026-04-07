@@ -135,53 +135,17 @@ install_from_brewfile() {
     info "Packages from $name installed successfully"
 }
 
-# Dev installation: Homebrew + Brewfile.dev
-install_dev_dependencies() {
-    info "Installing dev environment dependencies..."
-
-    # Ensure Homebrew is installed
-    ensure_homebrew
-
-    # Install from Brewfile.dev
-    install_from_brewfile "$BREWFILE_DEV" "Brewfile.dev"
-}
-
-# Full installation: Homebrew + full Brewfile (includes Brewfile.dev)
-install_full_dependencies() {
-    info "Installing full Mac environment..."
-
-    if [[ "$PLATFORM" != "macos" ]]; then
-        warn "Full installation is intended for macOS. Some packages may not install on Linux."
-    fi
-
-    # Ensure Homebrew is installed
-    ensure_homebrew
-
-    # Install from full Brewfile (which imports Brewfile.dev)
-    install_from_brewfile "$BREWFILE_FULL" "Brewfile"
-}
-
-# Minimal installation: just stow
-install_minimal_dependencies() {
-    info "Minimal mode: installing stow only..."
-    install_stow_native
-
-    # Warn about missing optional dependencies
-    if ! command -v eza &>/dev/null; then
-        warn "eza not found - ls aliases will not work. Run with --dev or --full to install."
-    fi
-    if ! command -v git &>/dev/null; then
-        warn "git not found - Zinit will not work. Please install git."
-    fi
-}
 
 # Create required directories
 create_directories() {
     info "Creating required directories..."
-    mkdir -p "$HOME/.local/bin"
-    mkdir -p "$HOME/.local/share/zinit"
-    mkdir -p "$HOME/.zfunc"
-    mkdir -p "$HOME/.config"
+    # Source zshenv to get canonical directory paths (single source of truth)
+    # shellcheck source=zsh/.zshenv
+    source "$DOTFILES_DIR/zsh/.zshenv"
+    mkdir -p "$LOCAL_BIN_DIR"
+    mkdir -p "$ZINIT_DIR"
+    mkdir -p "$LOCAL_COMPS_DIR"
+    mkdir -p "$CONFIG_DIR"
 }
 
 # Initialize git submodules (e.g., tpm for tmux)
@@ -277,67 +241,60 @@ stow_packages() {
 # Main Functions
 # =============================================================================
 
-# Minimal installation (default)
-main_minimal() {
-    echo ""
-    echo "=================================="
-    echo "  Dotfiles Installation (Minimal)"
-    echo "=================================="
-    echo ""
-    info "Detected platform: $PLATFORM"
-    echo ""
+main() {
+    local mode="${1:-minimal}"
+    local label
 
-    install_minimal_dependencies
-    create_directories
-    init_git_submodules
-    stow_packages
+    case "$mode" in
+        minimal) label="Minimal" ;;
+        dev)     label="Dev" ;;
+        full)    label="Full Mac Setup" ;;
+    esac
 
     echo ""
-    info "Minimal installation complete!"
-    info "Please restart your shell or run: exec zsh"
-    info "Run with --dev for dev tools or --full for complete Mac setup."
-    echo ""
-}
-
-# Dev installation
-main_dev() {
-    echo ""
     echo "=================================="
-    echo "  Dotfiles Installation (Dev)"
+    echo "  Dotfiles Installation ($label)"
     echo "=================================="
     echo ""
     info "Detected platform: $PLATFORM"
     echo ""
 
-    install_dev_dependencies
+    case "$mode" in
+        minimal)
+            info "Minimal mode: installing stow only..."
+            install_stow_native
+            if ! command -v eza &>/dev/null; then
+                warn "eza not found - ls aliases will not work. Run with --dev or --full to install."
+            fi
+            if ! command -v git &>/dev/null; then
+                warn "git not found - Zinit will not work. Please install git."
+            fi
+            ;;
+        dev)
+            info "Installing dev environment dependencies..."
+            ensure_homebrew
+            install_from_brewfile "$BREWFILE_DEV" "Brewfile.dev"
+            ;;
+        full)
+            info "Installing full Mac environment..."
+            if [[ "$PLATFORM" != "macos" ]]; then
+                warn "Full installation is intended for macOS. Some packages may not install on Linux."
+            fi
+            ensure_homebrew
+            install_from_brewfile "$BREWFILE_FULL" "Brewfile"
+            ;;
+    esac
+
     create_directories
     init_git_submodules
     stow_packages
 
     echo ""
-    info "Dev installation complete!"
+    info "$label installation complete!"
     info "Please restart your shell or run: exec zsh"
-    echo ""
-}
-
-# Full Mac installation
-main_full() {
-    echo ""
-    echo "=========================================="
-    echo "  Dotfiles Installation (Full Mac Setup)"
-    echo "=========================================="
-    echo ""
-    info "Detected platform: $PLATFORM"
-    echo ""
-
-    install_full_dependencies
-    create_directories
-    init_git_submodules
-    stow_packages
-
-    echo ""
-    info "Full Mac installation complete!"
-    info "Please restart your shell or run: exec zsh"
+    if [[ "$mode" == "minimal" ]]; then
+        info "Run with --dev for dev tools or --full for complete Mac setup."
+    fi
     echo ""
 }
 
@@ -415,22 +372,10 @@ show_list() {
 # =============================================================================
 
 case "${1:-}" in
-    --help|-h)
-        show_help
-        ;;
-    --list)
-        show_list
-        ;;
-    --dev)
-        main_dev
-        ;;
-    --full)
-        main_full
-        ;;
-    --unstow)
-        main_unstow
-        ;;
-    *)
-        main_minimal
-        ;;
+    --help|-h) show_help    ;;
+    --list)    show_list    ;;
+    --dev)     main dev     ;;
+    --full)    main full    ;;
+    --unstow)  main_unstow  ;;
+    *)         main minimal ;;
 esac
