@@ -7,20 +7,11 @@
 #### ENVIRONMENT
 
 ## GENERAL EXPORTS
-
-export CONFIG_DIR="${HOME}/.config"  # Config files
-export INSTALLS_DIR="${HOME}/.installs"  # Install scripts
-export LOCAL_COMPS_DIR="${HOME}/.zfunc"  # Manual made completions
-export ZSH_COMPDUMP="${HOME}/.zcompdump"  # Fixed location for completion cache
-
+# Dir vars are defined in .zshenv (single source of truth, also used by install.sh)
 ## END OF GENERAL EXPORTS
 
 
 ## ZINIT (ZSH plugin manager)
-
-# Set directory to store Zinit source code and local completions
-export ZINIT_DIR="${HOME}/.local/share/zinit"
-export ZINIT_HOME="${ZINIT_DIR}/zinit.git"
 
 # Download Zinit if not there yet
 if [ ! -d "$ZINIT_HOME" ]; then
@@ -283,10 +274,10 @@ if [[ -z "$REMOTE_CONTAINERS" && -z "$CODESPACES" && ! -f "/.dockerenv" ]]; then
         unset -f _pyenv_ve_init
     }
 
-    # Initializing pyenv:
-    pyenv_init
-    # Unsetting pyenv_init:
-    unset -f pyenv_init
+    # pyenv_init is available but not called automatically.
+    # This keeps pyenv shims out of PATH by default, avoiding conflicts with uv.
+    printf '%s\n' "[.zshrc][pyenv] Not initialized. To initialize, run 'pyenv_init'."
+
     # Initializing pyenv-virtuallenv:
     pyenv_ve_init --manual
 
