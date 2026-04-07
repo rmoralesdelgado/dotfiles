@@ -75,6 +75,7 @@ brew "postgresql@14"
 # -----------------------------------------------------------------------------
 # GUI Applications (Casks)
 # -----------------------------------------------------------------------------
-cask "orbstack"             # Docker & Linux VMs
-cask "font-hack-nerd-font"  # Nerd Font for terminal
+cask "orbstack"                    # Docker & Linux VMs
+cask "font-hack-nerd-font"         # Nerd Font for terminal
+cask "font-roboto-mono-nerd-font"  # Nerd Font used by Alacritty
 
