@@ -61,6 +61,15 @@ ensure_homebrew() {
         return 0
     fi
 
+    # On macOS, the Homebrew installer requires admin rights. Check early to
+    # give a clear error instead of letting the installer fail cryptically.
+    if [[ "$PLATFORM" == "macos" ]] && ! id -Gn | grep -qw "admin"; then
+        error "Homebrew requires your account to be an Administrator.\n\
+  The shell installer will fail without admin rights. Instead, install\n\
+  Homebrew manually using the .pkg installer, then re-run this script:\n\
+  https://github.com/Homebrew/brew/releases"
+    fi
+
     info "Installing Homebrew..."
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -251,6 +260,9 @@ main() {
         full)    label="Full Mac Setup" ;;
     esac
 
+    _completed=false
+    trap '[[ "$_completed" == false ]] && warn "Installation did not complete — some steps (e.g. stow) may not have run. Check the output above."' EXIT
+
     echo ""
     echo "=================================="
     echo "  Dotfiles Installation ($label)"
@@ -289,6 +301,7 @@ main() {
     init_git_submodules
     stow_packages
 
+    _completed=true
     echo ""
     info "$label installation complete!"
     info "Please restart your shell or run: exec zsh"
