@@ -21,9 +21,6 @@ instance_eval(File.read("#{__dir__}/Brewfile.dev")) if File.exist?("#{__dir__}/B
 # Taps (third-party repositories)
 # -----------------------------------------------------------------------------
 tap "jesseduffield/lazydocker"
-tap "qmk/qmk"
-tap "osx-cross/arm"
-tap "osx-cross/avr"
 
 # -----------------------------------------------------------------------------
 # Python version management (macOS only)
@@ -74,11 +71,6 @@ brew "tmux"                 # Terminal multiplexer
 # Databases
 # -----------------------------------------------------------------------------
 brew "postgresql@14"
-
-# -----------------------------------------------------------------------------
-# Keyboard/hardware tools
-# -----------------------------------------------------------------------------
-brew "qmk/qmk/qmk"          # QMK firmware tools
 
 # -----------------------------------------------------------------------------
 # GUI Applications (Casks)
