@@ -67,6 +67,7 @@ brew "lolcat"               # Rainbow text
 brew "neofetch"             # System info display
 brew "pillow"               # Python imaging
 brew "pipx"                 # Python app installer
+brew "uv"                   # Fast Python package and project manager
 brew "tmux"                 # Terminal multiplexer
 
 # -----------------------------------------------------------------------------
