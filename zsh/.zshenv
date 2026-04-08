@@ -17,3 +17,8 @@ export ZSH_COMPDUMP="${HOME}/.zcompdump"   # Completion cache
 
 export ZINIT_DIR="${HOME}/.local/share/zinit"
 export ZINIT_HOME="${ZINIT_DIR}/zinit.git"
+
+## UV
+
+export UV_PYTHON_PREFERENCE="${UV_PYTHON_PREFERENCE:-only-managed}"
+export UV_PYTHON_DOWNLOADS="${UV_PYTHON_DOWNLOADS:-automatic}"
