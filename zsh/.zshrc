@@ -18,7 +18,7 @@ if [ ! -d "$ZINIT_HOME" ]; then
    mkdir -p "$(dirname $ZINIT_HOME)"
    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
-#
+
 # Source and load Zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
@@ -27,13 +27,13 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 # INSTALL CORE ZINIT ANNEXES
 
-# IMPORTANT NOTE: On ices resolution order (from observation; not all possibilities incl)
-# atclone -> atinit -> pick -> src -> atload. atpull runs individually (i.e., no atinit, no src...)
-
 # Annex to not modify PATH when installing binaries; uses $ZPFX
 zinit light zdharma-continuum/z-a-bin-gem-node
 
 # INSTALL APPS AND BINARIES VIA ZINIT
+
+# IMPORTANT NOTE: On ices resolution order (from observation; not all possibilities incl)
+# atclone -> atinit -> pick -> src -> atload. atpull runs individually (i.e., no atinit, no src...)
 zinit ice wait lucid from"gh-r" as"null" sbin"fzf" \
     atclone"./fzf --zsh > init.zsh" \
     atpull"%atclone" \
@@ -167,7 +167,7 @@ zshaddhistory() {
 
 local_dir_exports () {
     printf '%s' "[.zshrc][local_dir_exports] "
-    local DIRS=("${HOME}/.local/bin" "${HOME}/.bin") # Add more here
+    local DIRS=("${HOME}/.local/bin" "${HOME}/.bin" "${HOME}/.orbstack/bin") # Add more here
     local SUCCESSES=()
     local FAILS=()
     local NOT_FOUNDS=()
@@ -378,6 +378,10 @@ update_zsh_completions () {
 # Auto-generate completions on first run if directory is empty
 if [[ -z "$(ls -A $LOCAL_COMPS_DIR 2>/dev/null)" ]]; then
     update_zsh_completions
+    # Re-register and re-initialize completions in this session so they're
+    # immediately available without requiring a second shell restart.
+    _zinit_load_local_completions
+    zicompinit
 fi
 ## END OF ADDITIONAL COMPLETIONS
 
