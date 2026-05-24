@@ -38,8 +38,6 @@ brew "fnm"
 # -----------------------------------------------------------------------------
 brew "node"
 brew "rust"
-brew "python@3.9"
-brew "python@3.10"
 
 # -----------------------------------------------------------------------------
 # Build tools & libraries
@@ -57,6 +55,7 @@ brew "zlib"
 # -----------------------------------------------------------------------------
 # CLI applications
 # -----------------------------------------------------------------------------
+brew "gemini-cli"           # Gemini CLI
 brew "duck"                 # Cyberduck CLI
 brew "imagemagick"          # Image manipulation
 brew "llmfit"               # Find right-sized LLMs that fit this machine
