@@ -33,5 +33,4 @@ brew "tree"                 # Directory tree visualization
 brew "gemini-cli"           # Gemini CLI
 brew "gh"                   # GitHub CLI
 brew "just"                 # Command runner (modern make alternative)
-brew "neofetch"             # System info display
 brew "tldr"                 # Simplified man pages
