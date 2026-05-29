@@ -21,6 +21,7 @@ instance_eval(File.read("#{__dir__}/Brewfile.dev")) if File.exist?("#{__dir__}/B
 # Taps (third-party repositories)
 # -----------------------------------------------------------------------------
 tap "jesseduffield/lazydocker"
+brew "lazydocker"           # Docker TUI
 
 # -----------------------------------------------------------------------------
 # Python version management (macOS only)
@@ -55,12 +56,10 @@ brew "zlib"
 # -----------------------------------------------------------------------------
 # CLI applications
 # -----------------------------------------------------------------------------
-brew "gemini-cli"           # Gemini CLI
 brew "duck"                 # Cyberduck CLI
 brew "imagemagick"          # Image manipulation
 brew "llmfit"               # Find right-sized LLMs that fit this machine
 brew "lolcat"               # Rainbow text
-brew "neofetch"             # System info display
 brew "pillow"               # Python imaging
 brew "pipx"                 # Python app installer
 brew "uv"                   # Fast Python package and project manager

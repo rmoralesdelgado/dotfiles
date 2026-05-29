@@ -4,8 +4,8 @@
 # Used by: ./install.sh --dev
 # Works on: macOS and Linux (via Linuxbrew)
 #
-# These are essential terminal tools needed for a productive dev environment
-# in devcontainers, cloud VMs, or local development.
+# Essential terminal tools for a dev environment:
+# devcontainers, cloud VMs, or local development.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -25,18 +25,13 @@ brew "tree"                 # Directory tree visualization
 # -----------------------------------------------------------------------------
 # Shell & prompt
 # -----------------------------------------------------------------------------
-brew "zsh-completions"      # Additional ZSH completions
-# Note: starship is installed via zinit in .zshrc
+# Note: starship and zsh-completions are installed via zinit in .zshrc
 
 # -----------------------------------------------------------------------------
-# Development tools
+# CLI applications
 # -----------------------------------------------------------------------------
+brew "gemini-cli"           # Gemini CLI
 brew "gh"                   # GitHub CLI
 brew "just"                 # Command runner (modern make alternative)
+brew "neofetch"             # System info display
 brew "tldr"                 # Simplified man pages
-
-# -----------------------------------------------------------------------------
-# Container tools
-# -----------------------------------------------------------------------------
-tap "jesseduffield/lazydocker"
-brew "lazydocker"  # Docker TUI
