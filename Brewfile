@@ -56,6 +56,7 @@ brew "zlib"
 # -----------------------------------------------------------------------------
 # CLI applications
 # -----------------------------------------------------------------------------
+brew "cmatrix"
 brew "duck"                 # Cyberduck CLI
 brew "imagemagick"          # Image manipulation
 brew "llmfit"               # Find right-sized LLMs that fit this machine
@@ -76,4 +77,4 @@ brew "postgresql@14"
 cask "orbstack"                    # Docker & Linux VMs
 cask "font-hack-nerd-font"         # Nerd Font for terminal
 cask "font-roboto-mono-nerd-font"  # Nerd Font used by Alacritty
-
+cask "nikitabobko/tap/aerospace"   # Tile manager
