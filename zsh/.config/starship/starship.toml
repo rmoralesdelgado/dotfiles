@@ -21,7 +21,7 @@ $haskell\
 $python\
 [](fg:color_bg3 bg:color_bg4)\
 $docker_context\
-$custom.devcontainer\
+${custom.devcontainer}\
 $conda\
 [](fg:color_bg4 bg:color_bg5)\
 $time\
@@ -219,8 +219,8 @@ format = '[[ $symbol( $environment) ](fg:color_fg0 bg:color_bg4)]($style)'
 [custom.devcontainer]
 # This checks whether inside a VS Code Dev Container or not
 command = "echo 'devcontainer'"
-when = 'test "$REMOTE_CONTAINERS" = "true" || test "$TERM_PROGRAM" = "vscode"'
-style = "bold blue"
+when = 'test "$REMOTE_CONTAINERS" = "true" || test -f /.dockerenv'
+style = "bg:color_bg4"
 format = '[[ $symbol( $output) ](fg:color_fg0 bg:color_bg4)]($style)'
 symbol = ""
 
